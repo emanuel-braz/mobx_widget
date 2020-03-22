@@ -66,5 +66,5 @@ ObserverStreamWidget(
 
 ### TODO
 - [x] add example
-- [] add unit test
-- [] widget test
+- [ ] add unit test
+- [ ] widget test
