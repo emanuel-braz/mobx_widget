@@ -4,12 +4,12 @@
 ### Example usage
 
 #### add dependency to pubspec.yaml
-```dart
+```yaml
   mobx_widget:
     git: https://github.com/emanuel-braz/mobx_widget.git
-
+```
  OR
-
+```yaml
   dependencies:
     mobx_widget: ^0.1.0
 ```
@@ -47,7 +47,7 @@ ObserverFutureWidget(
   onResult: (_, data) => MyCustomDataWidget(data: data),
   onResultNull: (_) => Center(child: Text('Oops! No connection.')),
   onPending: (_) => CircularProgressIndicator(),
-  onError: (_) => MyCustomErrorReloaderWidget(),
+  onError: (_, error) => MyCustomErrorReloaderWidget(error),
 );
 ```
 
@@ -65,6 +65,6 @@ ObserverStreamWidget(
 ```
 
 ### TODO
-* add example
-* add unit test
-* add widget test
+- [x] add example
+- [] add unit test
+- [] widget test
