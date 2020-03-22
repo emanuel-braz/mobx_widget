@@ -63,3 +63,8 @@ ObserverStreamWidget(
   onError: (_, error) => Text('ERROR: ' + error.toString())
 )
 ```
+
+### TODO
+* add example
+* add unit test
+* add widget test
