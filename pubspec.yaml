@@ -1,0 +1,22 @@
+name: mobx_widget
+description: If you use ObservableFuture or ObservableStream, maybe you should be considering to use some helpers widgets in your project, like ObserverFutureWidget or ObserverStreamWidget.
+version: 0.0.1
+author: Emanuel Braz (fastencoding@gmail.com)
+homepage: https://github.com/emanuel-braz/
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  mobx: ^1.0.1
+  flutter_mobx: ^1.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mobx_codegen: ^1.0.1
+  build_runner: ^1.0.0
+
+flutter:
