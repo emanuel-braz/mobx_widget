@@ -1,4 +1,4 @@
-## ObserverFutureWidget - A simple Widget to handle MobX ObservableFuture events.
+## If you use ObservableFuture or ObservableStream, maybe you should be considering to use some helpers widgets in your project, like ObserverFutureWidget or ObserverStreamWidget.
 
 
 ### Example usage
@@ -14,6 +14,7 @@
     mobx_widget: ^0.1.0
 ```
 
+#### Import package
 ```dart
 import 'package:mobx_widget/mobx_widget.dart';
 ```
