@@ -5,7 +5,6 @@ import 'package:mobx_widget/src/components/loader_widget.dart';
 import 'package:mobx_widget/src/components/reloader_button_widget.dart';
 
 class ObserverFutureWidget extends StatefulWidget {
-  
   final VoidCallback fetchData;
   final ObservableFuture Function() observableFuture;
   final Widget Function(BuildContext context, dynamic error) onError;
@@ -54,7 +53,6 @@ class _ObserverFutureWidgetState extends State<ObserverFutureWidget> {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
-
       ObservableFuture observable = widget?.observableFuture();
 
       if (observable?.status != FutureStatus.pending) hideOverlay();
@@ -65,15 +63,15 @@ class _ObserverFutureWidgetState extends State<ObserverFutureWidget> {
           if (widget.onPending != null) return widget.onPending(context);
           return (widget.progressOverlayEnabled) ? Container() : LoaderWidget();
         case FutureStatus.rejected:
-          if (widget.onError != null) return widget.onError(context, observable?.error);
+          if (widget.onError != null)
+            return widget.onError(context, observable?.error);
           return ReloaderButtonWidget(
             callback: widget.fetchData,
             buttonText: widget.reloadButtonText,
           );
         case FutureStatus.fulfilled:
           if (widget.onResultNull != null) {
-            if (observable?.value == null)
-              return widget.onResultNull(context);
+            if (observable?.value == null) return widget.onResultNull(context);
           }
           return widget.onResult(context, observable?.value);
         default:

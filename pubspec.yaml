@@ -1,6 +1,6 @@
 name: mobx_widget
-description: If you use ObservableFuture or ObservableStream, maybe you should be considering to use some helpers widgets in your project, like ObserverFutureWidget or ObserverStreamWidget.
-version: 0.0.1
+description: If you use ObservableFuture or ObservableStream, maybe you should be considering to use some helpers widgets in your project, like ObserverFutureWidget or ObserverStreamWidget from this package.
+version: 0.1.0
 author: Emanuel Braz (fastencoding@gmail.com)
 homepage: https://github.com/emanuel-braz/
 

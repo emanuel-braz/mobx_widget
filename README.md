@@ -3,6 +3,21 @@
 
 ### Example usage
 
+#### add dependency to pubspec.yaml
+```dart
+  mobx_widget:
+    git: https://github.com/emanuel-braz/mobx_widget.git
+
+ OR
+
+  dependencies:
+    mobx_widget: ^0.1.0
+```
+
+```dart
+import 'package:mobx_widget/mobx_widget.dart';
+```
+
 #### Create the ObservableFuture
 ```dart
 class MyStore {
