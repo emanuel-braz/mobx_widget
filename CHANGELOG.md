@@ -5,3 +5,6 @@
 ## [0.1.1] - Example included
 * add example
 
+## [0.1.2] - Bugfix
+* Only shows default reloader if there is callback and buttonText values
+
