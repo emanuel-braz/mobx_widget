@@ -65,10 +65,12 @@ class _ObserverFutureWidgetState extends State<ObserverFutureWidget> {
         case FutureStatus.rejected:
           if (widget.onError != null)
             return widget.onError(context, observable?.error);
-          return ReloaderButtonWidget(
-            callback: widget.fetchData,
-            buttonText: widget.reloadButtonText,
-          );
+          if (widget.fetchData != null && widget.reloadButtonText != null) 
+            return ReloaderButtonWidget(
+              callback: widget.fetchData,
+              buttonText: widget.reloadButtonText,
+            );
+          return Container();
         case FutureStatus.fulfilled:
           if (widget.onResultNull != null) {
             if (observable?.value == null) return widget.onResultNull(context);
