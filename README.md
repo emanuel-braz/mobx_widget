@@ -25,8 +25,8 @@ import 'package:mobx_widget/mobx_widget.dart';
 ```dart
 ObserverFuture(
   observableFuture: () => myStore.myObservableFuture,
-  onResult: (_, data) => MyCustomDataWidget(data: data),
-  onResultNull: (_) => Center(child: Text('Oops! No connection.')),
+  onData: (_, data) => MyCustomDataWidget(data: data),
+  onNull: (_) => Center(child: Text('Oops! No connection.')),
   onPending: (_) => CircularProgressIndicator(),
   onError: (_, error) => MyCustomErrorReloaderWidget(error),
 );
