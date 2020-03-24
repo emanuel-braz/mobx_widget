@@ -1,4 +1,6 @@
-## If you use ObservableFuture or ObservableStream, maybe you should be considering to use some helpers widgets in your project, like ObserverFutureWidget or ObserverStreamWidget.
+[![Pub Version](https://img.shields.io/pub/v/mobx_widget?color=%2302569B&label=pub&logo=flutter)](https://pub.dev/packages/mobx_widget) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
+### A simple way to consume MobX Observables through widgets. You can find a sort of widgets, like ObserverFuture, ObserverStream and ObserverText
 
 
 ### Example usage
@@ -11,52 +13,28 @@
  OR
 ```yaml
   dependencies:
-    mobx_widget: ^0.1.0
+    mobx_widget: ^0.1.3
 ```
 
-#### Import package
+#### Import package and use Observer Widgets
 ```dart
 import 'package:mobx_widget/mobx_widget.dart';
 ```
 
-#### Create the ObservableFuture
+#### ObservableFuture (ObserverFuture)
 ```dart
-class MyStore {
-
-  ...
-
-  MyStore(){
-    fetchData();
-  }
-  
-  @observable
-  ObservableFuture<String> myObservableFuture;
-  
-  @action
-  Future<String> fetchData() async {
-    return await (myObservableFuture = ObservableFuture( _repository.fetch() ));
-  }
-}
-```
-
-#### With Future (ObservableFuture)
-```dart
-...
-
-ObserverFutureWidget(
+ObserverFuture(
   observableFuture: () => myStore.myObservableFuture,
-  onResult: (_, data) => MyCustomDataWidget(data: data),
-  onResultNull: (_) => Center(child: Text('Oops! No connection.')),
+  onData: (_, data) => MyCustomDataWidget(data: data),
+  onNull: (_) => Center(child: Text('Oops! No connection.')),
   onPending: (_) => CircularProgressIndicator(),
   onError: (_, error) => MyCustomErrorReloaderWidget(error),
 );
 ```
 
-#### With Stream (ObservableStream)
+#### ObservableStream (ObserverStream)
 ```dart
-...
-
-ObserverStreamWidget(
+ObserverStream(
   observableStream: () => myObservableStream,
   onData: (_, data) => Text('$data'),
   onNull: (_) => Text('NULL'),
@@ -65,7 +43,15 @@ ObserverStreamWidget(
 )
 ```
 
+#### Text Widget (ObserverText)
+```dart
+ObserverText(onData: (_) => myStore.text)
+```
+
+#### Contributions of any kind are welcome! 👾
+
 ### TODO
 - [x] add example
 - [ ] add unit test
-- [ ] widget test
+- [ ] add widget test
+- [ ] add more widgets
