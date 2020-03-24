@@ -4,25 +4,25 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx_widget/src/components/loader_widget.dart';
 import 'package:mobx_widget/src/components/reloader_button_widget.dart';
 
-class ObserverFutureWidget extends StatefulWidget {
+class ObserverFuture extends StatefulWidget {
   final VoidCallback fetchData;
   final ObservableFuture Function() observableFuture;
   final Widget Function(BuildContext context, dynamic error) onError;
   final Widget Function(BuildContext context) onPending;
   final Widget Function(BuildContext context) onUnstarted;
-  final Widget Function(BuildContext context) onResultNull;
-  final Widget Function(BuildContext context, dynamic data) onResult;
+  final Widget Function(BuildContext context) onNull;
+  final Widget Function(BuildContext context, dynamic data) onData;
 
   final bool progressOverlayEnabled;
   final Color progressOverlayColor;
   final Color progressOverlayBgColor;
   final String reloadButtonText;
 
-  ObserverFutureWidget(
+  ObserverFuture(
       {Key key,
       @required this.observableFuture,
-      @required this.onResult,
-      this.onResultNull,
+      @required this.onData,
+      this.onNull,
       this.fetchData,
       this.onPending,
       this.onError,
@@ -31,15 +31,15 @@ class ObserverFutureWidget extends StatefulWidget {
       this.progressOverlayColor,
       this.reloadButtonText,
       this.progressOverlayBgColor})
-      : assert(onResult != null),
+      : assert(onData != null),
         assert(observableFuture != null),
         super(key: key);
 
   @override
-  _ObserverFutureWidgetState createState() => _ObserverFutureWidgetState();
+  _ObserverFutureState createState() => _ObserverFutureState();
 }
 
-class _ObserverFutureWidgetState extends State<ObserverFutureWidget> {
+class _ObserverFutureState extends State<ObserverFuture> {
   OverlayEntry _overlayEntry;
 
   @override
@@ -72,10 +72,10 @@ class _ObserverFutureWidgetState extends State<ObserverFutureWidget> {
             );
           return Container();
         case FutureStatus.fulfilled:
-          if (widget.onResultNull != null) {
-            if (observable?.value == null) return widget.onResultNull(context);
+          if (widget.onNull != null) {
+            if (observable?.value == null) return widget.onNull(context);
           }
-          return widget.onResult(context, observable?.value);
+          return widget.onData(context, observable?.value);
         default:
           if (widget.onUnstarted != null) return widget.onUnstarted(context);
           return Container();

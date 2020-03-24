@@ -13,6 +13,9 @@ abstract class _MyStore with Store {
   StreamController<String> _streamController;
   ObservableStream<String> observableStream; // Use in widget ObserverStreamWidget
 
+  @observable String text = "inicio";
+  @action void changeText(String value) => text = value;
+
   @observable
   ObservableFuture<String> observableFuture; // Use in widget ObserverFutureWidget
 
@@ -37,16 +40,20 @@ abstract class _MyStore with Store {
     // return Future.error('Sh**ts happens!');
   } 
 
+
   _handleStreamData(Timer _) {
     var result = _random.nextInt(3);
     print(result);
 
     if (result == 0) {
       _streamController.add(null);
+      changeText('nulll');
     } else if (result == 1) {
       _streamController.addError('Sh**ts happens!');
+      changeText('Sh**ts happens!');
     } else {
       _streamController.add('got some stream data');
+      changeText('got some stream data');
     }
   }
 

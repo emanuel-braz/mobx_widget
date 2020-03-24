@@ -54,13 +54,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     'ObservableStream > ',
                     style: Theme.of(context).textTheme.headline5,
                   )),
-              ObserverStreamWidget( // Use this widget to handle ObservableStream events
+              ObserverStream( // Use this widget to handle ObservableStream events
                 observableStream: () => myStore.observableStream,
                 onData: (_, data) => Text('$data'),
                 onNull: (_) => Text('NULL'),
                 onUnstarted: (_) => Text('UNSTARTED'),
                 onError: (context, error) => Text('error: ' + error.toString()),
-              ),
+              ), 
               SizedBox(
                 height: 16,
               ),
@@ -70,14 +70,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     'ObservableFuture > ',
                     style: Theme.of(context).textTheme.headline5,
                   )),
-              ObserverFutureWidget( // Use this widget to handle ObservableFuture events
+              ObserverFuture( // Use this widget to handle ObservableFuture events
                 observableFuture: () => myStore.observableFuture,
-                onResult: (_, data) => Text(data.toString()),
-                onResultNull: (_) => Text('NULL'),
+                onData: (_, data) => Text(data.toString()),
+                onNull: (_) => Text('NULL'),
                 onError: (context, error) => Text('error: ${error.toString()}'),
                 onPending: (context) => CircularProgressIndicator(),
                 onUnstarted: (context) => Text('UNSTARTED'),
               ),
+              SizedBox(
+                height: 16,
+              ),
+              ObserverText(onData: (_) => myStore.text)
             ],
           ),
         ),
