@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 
 class ObserverStream extends Observer {
-
   final ObservableStream Function() observableStream;
   final Widget Function(BuildContext context, dynamic error) onError;
   final Widget Function(BuildContext context) onUnstarted;
