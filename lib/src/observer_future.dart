@@ -5,17 +5,37 @@ import 'package:mobx_widget/src/components/loader_widget.dart';
 import 'package:mobx_widget/src/components/reloader_button_widget.dart';
 
 class ObserverFuture extends StatefulWidget {
+  /// If [fetchData] is filled, it will be called just once on initState.
   final VoidCallback fetchData;
+
   final ObservableFuture Function() observableFuture;
   final Widget Function(BuildContext context, dynamic error) onError;
   final Widget Function(BuildContext context) onPending;
   final Widget Function(BuildContext context) onUnstarted;
   final Widget Function(BuildContext context) onNull;
+
+  /// the [data] property has the value of ObservableFuture, and it may be null eventually.
+  /// You can handle null value on [onData] callback or just enter a [onNull] callback to handle null values separately.
+  /// Note, if you set a [onNull] callback, the [onData] will not be triggered if value == null.
   final Widget Function(BuildContext context, dynamic data) onData;
 
-  final bool progressOverlayEnabled;
+  /// Show CircularProgressIndicator while status == pending
+  final bool showDefaultProgressInWidget;
+
+  /// Show CircularProgressIndicator over the entire app and lock taps on screen, while status == pending
+  final bool showDefaultProgressInOverlay;
+
+  /// Overlay [onPending] circular progress indicator color (if showDefaultProgressInOverlay is enabled)
   final Color progressOverlayColor;
+
+  /// Overlay [onPending] Background color (if showDefaultProgressInOverlay is enabled)
   final Color progressOverlayBgColor;
+
+  /// Required to inform [showDefaultProgressInOverlay = true] in order to show that widget on [onPending] event
+  /// This widget will be shown over the entire screen
+  final Widget overlayWidget;
+
+  /// Required to inform [fetchData] in order to show that button on error events
   final String reloadButtonText;
 
   ObserverFuture(
@@ -27,12 +47,18 @@ class ObserverFuture extends StatefulWidget {
       this.onPending,
       this.onError,
       this.onUnstarted,
-      this.progressOverlayEnabled = false,
+      this.showDefaultProgressInOverlay = false,
+      this.showDefaultProgressInWidget = false,
       this.progressOverlayColor,
       this.reloadButtonText,
-      this.progressOverlayBgColor})
+      this.progressOverlayBgColor,
+      this.overlayWidget})
       : assert(onData != null),
         assert(observableFuture != null),
+        assert(
+            showDefaultProgressInOverlay == false ||
+                showDefaultProgressInWidget == false,
+            ' ==>> Warning: Cannot provide both a showDefaultProgressInOverlay and a showDefaultProgressInWidget'),
         super(key: key);
 
   @override
@@ -59,9 +85,14 @@ class _ObserverFutureState extends State<ObserverFuture> {
 
       switch (observable?.status) {
         case FutureStatus.pending:
-          if (widget.progressOverlayEnabled) showOverlay();
+          if (widget.showDefaultProgressInOverlay) showOverlay();
           if (widget.onPending != null) return widget.onPending(context);
-          return (widget.progressOverlayEnabled) ? Container() : LoaderWidget();
+          return (widget.showDefaultProgressInWidget)
+              ? LoaderWidget(
+                  color: Theme.of(context).primaryColor,
+                  backgroundColor: Colors.transparent,
+                )
+              : Container();
         case FutureStatus.rejected:
           if (widget.onError != null)
             return widget.onError(context, observable?.error);
@@ -89,7 +120,7 @@ class _ObserverFutureState extends State<ObserverFuture> {
   }
 
   void showOverlay() {
-    if (widget.progressOverlayEnabled) {
+    if (widget.showDefaultProgressInOverlay) {
       Future.delayed(Duration(milliseconds: 1), () {
         this._overlayEntry = createOverlayEntry(
             color: widget.progressOverlayColor,
@@ -101,9 +132,14 @@ class _ObserverFutureState extends State<ObserverFuture> {
 
   OverlayEntry createOverlayEntry({Color color, Color backgroundColor}) {
     return OverlayEntry(
-        builder: (context) => LoaderWidget(
-              color: color ?? Theme.of(context).primaryColor,
-              backgroundColor: backgroundColor ?? Colors.black12,
-            ));
+        builder: (context) => widget.overlayWidget != null
+            ? Material(
+                child: widget.overlayWidget,
+                color: Colors.transparent,
+              )
+            : LoaderWidget(
+                color: color ?? Theme.of(context).primaryColor,
+                backgroundColor: backgroundColor ?? Colors.black26,
+              ));
   }
 }

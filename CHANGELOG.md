@@ -10,3 +10,6 @@
 
 ## [0.1.3] - Add new widget
 * Added ObserverText widget
+
+## [0.2.0] - Add custom overlay [onPending]
+* Add feature

@@ -1,3 +1,4 @@
+import 'package:example/my_custom_widget.dart';
 import 'package:example/my_store.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx_widget/mobx_widget.dart';
@@ -48,40 +49,52 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Container(
-                  alignment: Alignment.center, 
-                  child: Text(
-                    'ObservableStream > ',
-                    style: Theme.of(context).textTheme.headline5,
-                  )),
-              ObserverStream( // Use this widget to handle ObservableStream events
+              Text(
+                'ObservableStream:',
+              ),
+              ObserverStream(
+                // Use this widget to handle ObservableStream events
                 observableStream: () => myStore.observableStream,
-                onData: (_, data) => Text('$data'),
+                onData: (_, data) => Text('DATA: $data'),
                 onNull: (_) => Text('NULL'),
                 onUnstarted: (_) => Text('UNSTARTED'),
-                onError: (context, error) => Text('error: ' + error.toString()),
-              ), 
+                onError: (_, error) => Text('ERROR: ' + error.toString()),
+              ),
               SizedBox(
                 height: 16,
               ),
-              Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'ObservableFuture > ',
-                    style: Theme.of(context).textTheme.headline5,
-                  )),
-              ObserverFuture( // Use this widget to handle ObservableFuture events
+              Divider(),
+              ObserverText(
+                onData: (_) => 'ObserverText:\n${myStore.text}',
+                // style: Theme.of(context).textTheme.bodyText1,
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Divider(),
+              Text(
+                'ObservableFuture:',
+              ),
+              ObserverFuture(
+                // Use this widget to handle ObservableFuture events
                 observableFuture: () => myStore.observableFuture,
-                onData: (_, data) => Text(data.toString()),
+                onData: (_, data) => Text('DATA: ${data.toString()}'),
                 onNull: (_) => Text('NULL'),
-                onError: (context, error) => Text('error: ${error.toString()}'),
-                onPending: (context) => CircularProgressIndicator(),
-                onUnstarted: (context) => Text('UNSTARTED'),
+                onError: (_, error) => Text('ERROR: ${error.toString()}'),
+                onPending: (_) => Text('PENDING'),
+                onUnstarted: (_) => Text('UNSTARTED'),
               ),
               SizedBox(
                 height: 16,
               ),
-              ObserverText(onData: (_) => myStore.text)
+              Divider(),
+              Text(
+                'MyCustomObserverFuture:',
+              ),
+              MyCustomObserverFutureWidget(
+                observableFuture: () => myStore.observableFuture,
+                onData: (_, data) => Text('😍'),
+              )
             ],
           ),
         ),

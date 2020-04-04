@@ -10,14 +10,11 @@ class LoaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: double.infinity,
-      width: double.infinity,
-      color: backgroundColor ?? Colors.white,
-      child: Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(
-              color ?? Theme.of(context).primaryColor),
-        ),
+      alignment: Alignment.center,
+      color: this.backgroundColor ?? Colors.black26,
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(
+            color ?? Theme.of(context).primaryColor),
       ),
     );
   }
