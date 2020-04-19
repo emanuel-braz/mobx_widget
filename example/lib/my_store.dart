@@ -39,9 +39,9 @@ abstract class _MyStore with Store {
 
   Future<String> _clientFetch() async {
     await Future.delayed(Duration(seconds: 3));
-    return 'lorem ipsum';
+    // return 'lorem ipsum';
     // return Future.value(null);
-    // return Future.error('mistakes happens');
+    return Future.error(Exception('mistakes happens'));
   }
 
   _handleStreamData(Timer _) {

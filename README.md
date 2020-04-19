@@ -20,13 +20,14 @@
 import 'package:mobx_widget/mobx_widget.dart';
 ```
 
-#### ObservableFuture (ObserverFuture)
+#### ObservableFuture (ObserverFuture) - Generic types is optional(required both if used)
 ```dart
-ObserverFuture( // Use this widget to handle ObservableFuture events
+ObserverFuture<String, Exception>( // Use this widget to handle ObservableFuture events
+  // Use this widget to handle ObservableFuture events
   observableFuture: () => myStore.observableFuture,
-  onData: (_, data) => Text('DATA: ${data.toString()}'),
+  onData: (_, data) => Text('DATA: $data'),
   onNull: (_) => Text('NULL'),
-  onError: (_, error) => Text('ERROR: ${error.toString()}'),
+  onError: (_, error) => Text('${error.toString()}'),
   onPending: (_) => Text('PENDING'),
   onUnstarted: (_) => Text('UNSTARTED'),
 )

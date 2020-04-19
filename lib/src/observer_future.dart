@@ -4,12 +4,12 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx_widget/src/components/loader_widget.dart';
 import 'package:mobx_widget/src/components/reloader_button_widget.dart';
 
-class ObserverFuture extends StatefulWidget {
+class ObserverFuture<D, E> extends StatefulWidget {
   /// If [fetchData] is filled, it will be called just once on initState.
   final VoidCallback fetchData;
 
   final ObservableFuture Function() observableFuture;
-  final Widget Function(BuildContext context, dynamic error) onError;
+  final Widget Function(BuildContext context, E error) onError;
   final Widget Function(BuildContext context) onPending;
   final Widget Function(BuildContext context) onUnstarted;
   final Widget Function(BuildContext context) onNull;
@@ -17,7 +17,7 @@ class ObserverFuture extends StatefulWidget {
   /// the [data] property has the value of ObservableFuture, and it may be null eventually.
   /// You can handle null value on [onData] callback or just enter a [onNull] callback to handle null values separately.
   /// Note, if you set a [onNull] callback, the [onData] will not be triggered if value == null.
-  final Widget Function(BuildContext context, dynamic data) onData;
+  final Widget Function(BuildContext context, D data) onData;
 
   /// Show CircularProgressIndicator while status == pending
   final bool showDefaultProgressInWidget;
@@ -62,10 +62,10 @@ class ObserverFuture extends StatefulWidget {
         super(key: key);
 
   @override
-  _ObserverFutureState createState() => _ObserverFutureState();
+  _ObserverFutureState<D, E> createState() => _ObserverFutureState<D, E>();
 }
 
-class _ObserverFutureState extends State<ObserverFuture> {
+class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
   OverlayEntry _overlayEntry;
 
   @override

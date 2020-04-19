@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 
-class ObserverStream extends Observer {
+class ObserverStream<D, E> extends Observer {
   final ObservableStream Function() observableStream;
-  final Widget Function(BuildContext context, dynamic error) onError;
+  final Widget Function(BuildContext context, E error) onError;
   final Widget Function(BuildContext context) onUnstarted;
   final Widget Function(BuildContext context) onNull;
-  final Widget Function(BuildContext context, dynamic data) onData;
+  final Widget Function(BuildContext context, D data) onData;
 
   ObserverStream(
       {Key key,
