@@ -2,11 +2,14 @@
 
 ### ObserverFuture, ObserverStream and ObserverText Widget - A simple way to consume MobX Observables through widgets. You can find a sort of widgets.
 
+
+![preview](https://user-images.githubusercontent.com/3827308/79704747-40f2b600-8289-11ea-97e4-55f4d85800e8.gif)
+
 ### Example usage
 
 ```yaml
   dependencies:
-    mobx_widget: ^0.2.0
+    mobx_widget: ^0.3.0
 ```
 
 #### Import package and use Observer Widgets
