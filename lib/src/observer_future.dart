@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx_widget/src/components/loader_widget.dart';
 import 'package:mobx_widget/src/components/reloader_button_widget.dart';
+import 'package:mobx_widget/src/utils/braz_animated_transition.dart';
 
 class ObserverFuture<D, E> extends StatefulWidget {
   /// If [fetchData] is filled, it will be called just once on initState.
@@ -13,6 +14,7 @@ class ObserverFuture<D, E> extends StatefulWidget {
   final Widget Function(BuildContext context) onPending;
   final Widget Function(BuildContext context) onUnstarted;
   final Widget Function(BuildContext context) onNull;
+  final BrazTransition transition;
 
   /// the [data] property has the value of ObservableFuture, and it may be null eventually.
   /// You can handle null value on [onData] callback or just enter a [onNull] callback to handle null values separately.
@@ -52,7 +54,8 @@ class ObserverFuture<D, E> extends StatefulWidget {
       this.progressOverlayColor,
       this.reloadButtonText,
       this.progressOverlayBgColor,
-      this.overlayWidget})
+      this.overlayWidget,
+      this.transition})
       : assert(onData != null),
         assert(observableFuture != null),
         assert(
@@ -79,39 +82,49 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
-      ObservableFuture observable = widget?.observableFuture();
+      if (widget.transition != null)
+        return BrazAnimatedTransition(
+          transition: widget.transition,
+          child: _getChildWidget(context),
+        );
 
-      if (observable?.status != FutureStatus.pending) hideOverlay();
-
-      switch (observable?.status) {
-        case FutureStatus.pending:
-          if (widget.showDefaultProgressInOverlay) showOverlay();
-          if (widget.onPending != null) return widget.onPending(context);
-          return (widget.showDefaultProgressInWidget)
-              ? LoaderWidget(
-                  color: Theme.of(context).primaryColor,
-                  backgroundColor: Colors.transparent,
-                )
-              : Container();
-        case FutureStatus.rejected:
-          if (widget.onError != null)
-            return widget.onError(context, observable?.error);
-          if (widget.fetchData != null && widget.reloadButtonText != null)
-            return ReloaderButtonWidget(
-              callback: widget.fetchData,
-              buttonText: widget.reloadButtonText,
-            );
-          return Container();
-        case FutureStatus.fulfilled:
-          if (widget.onNull != null) {
-            if (observable?.value == null) return widget.onNull(context);
-          }
-          return widget.onData(context, observable?.value);
-        default:
-          if (widget.onUnstarted != null) return widget.onUnstarted(context);
-          return Container();
-      }
+      return _getChildWidget(context);
     });
+  }
+
+  Widget _getChildWidget(BuildContext context) {
+    ObservableFuture observable = widget?.observableFuture();
+
+    if (observable?.status != FutureStatus.pending) hideOverlay();
+
+    switch (observable?.status) {
+      case FutureStatus.pending:
+        if (widget.showDefaultProgressInOverlay) showOverlay();
+        if (widget.onPending != null) return widget.onPending(context);
+        return (widget.showDefaultProgressInWidget)
+            ? LoaderWidget(
+                color: Theme.of(context).primaryColor,
+                backgroundColor: Colors.transparent,
+              )
+            : Container();
+      case FutureStatus.rejected:
+        if (widget.onError != null)
+          return widget.onError(context, observable?.error);
+        if (widget.fetchData != null && widget.reloadButtonText != null)
+          return ReloaderButtonWidget(
+            callback: widget.fetchData,
+            buttonText: widget.reloadButtonText,
+          );
+        return Container();
+      case FutureStatus.fulfilled:
+        if (widget.onNull != null) {
+          if (observable?.value == null) return widget.onNull(context);
+        }
+        return widget.onData(context, observable?.value);
+      default:
+        if (widget.onUnstarted != null) return widget.onUnstarted(context);
+        return Container();
+    }
   }
 
   void hideOverlay() {

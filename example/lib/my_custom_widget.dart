@@ -8,24 +8,34 @@ class MyCustomObserverFutureWidget extends StatelessWidget {
 
   MyCustomObserverFutureWidget({Key key, this.observableFuture, this.onData})
       : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return ObserverFuture(
-        observableFuture: observableFuture,
-        onData: onData,
-        onNull: (_) => Text('🤔'),
-        onError: (_, error) => Text('😥'),
-        onUnstarted: (_) => Text('😐'),
-        onPending: (_) => Text('👂👂👂'),
-        showDefaultProgressInOverlay: true,
-        overlayWidget: Container(
-          color: Colors.black45,
-          child: Text(
-            '👀💬',
-            style: TextStyle(fontSize: 40),
-          ),
-          alignment: Alignment.center,
-        ));
+      transition: BrazTransition(transition: BrazTransitionEnum.rotate),
+      observableFuture: observableFuture,
+      onData: onData,
+      onNull: (_) => Icon(
+        Icons.ac_unit,
+        key: ObserverKeyOnNull,
+      ),
+      onError: (_, error) => Icon(
+        Icons.access_alarms,
+        key: ObserverKeyOnError,
+      ),
+      onUnstarted: (_) => Icon(
+        Icons.accessibility_new,
+        key: ObserverKeyOnUnstarted,
+      ),
+      onPending: (_) => Icon(Icons.account_box, key: ObserverKeyOnPending),
+      // showDefaultProgressInOverlay: true,
+      // overlayWidget: Container(
+      //   color: Colors.black45,
+      //   child: Text(
+      //     '👀💬',
+      //     style: TextStyle(fontSize: 40),
+      //   ),
+      //   alignment: Alignment.center,
+      // ),
+    );
   }
 }

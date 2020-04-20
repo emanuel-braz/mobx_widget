@@ -4,12 +4,6 @@
 
 ### Example usage
 
-#### add dependency to pubspec.yaml
-```yaml
-  mobx_widget:
-    git: https://github.com/emanuel-braz/mobx_widget.git
-```
- OR
 ```yaml
   dependencies:
     mobx_widget: ^0.2.0
@@ -18,6 +12,20 @@
 #### Import package and use Observer Widgets
 ```dart
 import 'package:mobx_widget/mobx_widget.dart';
+```
+
+#### Animated Transitions for Observable Text Widget (ObserverText)
+```dart
+ObserverText(
+  transition: BrazTransition(
+    transition: BrazTransitionEnum.fade,
+    duration: Duration(seconds: 1),
+    curveIn: Curves.linear,
+    curveOut: Curves.linear,
+  ),
+  onData: (_) => '${myStore.currentStatus}',
+  // style: Theme.of(context).textTheme.bodyText1,
+)
 ```
 
 #### ObservableFuture (ObserverFuture) - Generic types is optional(required both if used)
@@ -83,10 +91,13 @@ class MyCustomObserverFutureWidget extends StatelessWidget {
 }
 ```
 
+### All widgets has an optional transition prorpety in version 0.3.0
+
 #### Contributions of any kind are welcome! 👾
 
 ### TODO
 - [x] add example
+- [x] add animated transitions
 - [ ] add unit test
 - [ ] add widget test
 - [ ] add more widgets

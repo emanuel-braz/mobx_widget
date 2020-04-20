@@ -1,6 +1,6 @@
 name: mobx_widget
 description: ObserverFuture, ObserverStream and ObserverText Widget - A simple way to consume MobX Observables through widgets. You can find a sort of widgets.
-version: 0.2.1
+version: 0.3.0
 author: Emanuel Braz (fastencoding@gmail.com)
 homepage: https://github.com/emanuel-braz/
 

@@ -9,10 +9,14 @@ class MyStore = _MyStore with _$MyStore;
 
 abstract class _MyStore with Store {
   Timer _timer;
+  Timer _timer2;
   final _random = Random();
   StreamController<String> _streamController;
   ObservableStream<String>
       observableStream; // Use in widget ObserverStreamWidget
+  StreamController<double> _streamController2;
+  ObservableStream<double>
+      observableStream2; // Use in widget ObserverStreamWidget
 
   @observable
   String text = "UNSTARTED";
@@ -33,15 +37,24 @@ abstract class _MyStore with Store {
     _timer = Timer.periodic(const Duration(seconds: 2), _handleStreamData);
     observableStream = ObservableStream(_streamController.stream);
 
+    double counter = 0;
+    _streamController2 = StreamController<double>();
+    observableStream2 = ObservableStream(_streamController2.stream);
+    _timer2 = Timer.periodic(const Duration(milliseconds: 100), (d) {
+      if (counter == 100) counter = 0;
+      _streamController2.add(counter++);
+    });
+
     Future.delayed(Duration(seconds: 3),
         fetch); // Delay future call, to allow rendering unstarted widget
   }
 
   Future<String> _clientFetch() async {
     await Future.delayed(Duration(seconds: 3));
-    // return 'lorem ipsum';
+    Future.delayed(Duration(seconds: 2), fetch);
+    return 'lorem ipsum';
     // return Future.value(null);
-    return Future.error(Exception('mistakes happens'));
+    // return Future.error(Exception('mistakes happens'));
   }
 
   _handleStreamData(Timer _) {
@@ -61,6 +74,7 @@ abstract class _MyStore with Store {
 
   void dispose() async {
     _timer.cancel();
+    _timer2.cancel();
     await _streamController.close();
   }
 }
