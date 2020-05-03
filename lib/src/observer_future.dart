@@ -59,15 +59,15 @@ class ObserverFuture<D, E> extends StatefulWidget {
       this.overlayWidget,
       this.transition,
       this.retry,
-      this.autoInitialize = true
-      })
+      this.autoInitialize = true})
       : assert(onData != null),
         assert(observableFuture != null),
         assert(
             showDefaultProgressInOverlay == false ||
                 showDefaultProgressInWidget == false,
             ' ==>> Warning: Cannot provide both a showDefaultProgressInOverlay and a showDefaultProgressInWidget'),
-        assert(!(retry != null && fetchData == null), 'In order to use [retry] you must inform the [fetchData] callback'),
+        assert(!(retry != null && fetchData == null),
+            'In order to use [retry] you must inform the [fetchData] callback'),
         super(key: key);
 
   @override
@@ -84,13 +84,14 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
 
     tries = widget.retry;
 
-    if (widget.autoInitialize == true && widget?.fetchData != null &&
-    widget?.observableFuture()?.status != FutureStatus.pending &&
-    widget?.observableFuture()?.value == null) fetchDataCallback();
-
+    if (widget.autoInitialize == true &&
+        widget?.fetchData != null &&
+        widget?.observableFuture()?.status != FutureStatus.pending &&
+        widget?.observableFuture()?.value == null) fetchDataCallback();
   }
 
-  void fetchDataCallback() => Future.delayed(Duration.zero,() => widget.fetchData?.call());
+  void fetchDataCallback() =>
+      Future.delayed(Duration.zero, () => widget.fetchData?.call());
 
   @override
   Widget build(BuildContext context) {
@@ -114,9 +115,8 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
       case FutureStatus.pending:
         return showPendingWidget(context);
       case FutureStatus.rejected:
-
-        if (widget.retry != null && widget.fetchData != null){
-          if (tries > 0){
+        if (widget.retry != null && widget.fetchData != null) {
+          if (tries > 0) {
             tries--;
             fetchDataCallback();
             return showPendingWidget(context);
@@ -142,15 +142,15 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
     }
   }
 
-  Widget showPendingWidget(BuildContext context){
+  Widget showPendingWidget(BuildContext context) {
     if (widget.showDefaultProgressInOverlay) showOverlay();
-        if (widget.onPending != null) return widget.onPending(context);
-        return (widget.showDefaultProgressInWidget)
-            ? LoaderWidget(
-                color: Theme.of(context).primaryColor,
-                backgroundColor: Colors.transparent,
-              )
-            : Container();
+    if (widget.onPending != null) return widget.onPending(context);
+    return (widget.showDefaultProgressInWidget)
+        ? LoaderWidget(
+            color: Theme.of(context).primaryColor,
+            backgroundColor: Colors.transparent,
+          )
+        : Container();
   }
 
   void hideOverlay() {
