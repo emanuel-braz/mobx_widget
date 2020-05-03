@@ -225,6 +225,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       transition: BrazTransitionEnum.slideHorizontal,
                       duration: Duration(seconds: 1),
                     ),
+                    retry: 1,
+                    autoInitialize: false,
+                    fetchData: myStore.fetch,
                     observableFuture: () => myStore.observableFuture,
                     onData: (_, data) => Text(
                       '😊',

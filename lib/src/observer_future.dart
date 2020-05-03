@@ -15,6 +15,8 @@ class ObserverFuture<D, E> extends StatefulWidget {
   final Widget Function(BuildContext context) onUnstarted;
   final Widget Function(BuildContext context) onNull;
   final BrazTransition transition;
+  final int retry;
+  final bool autoInitialize;
 
   /// the [data] property has the value of ObservableFuture, and it may be null eventually.
   /// You can handle null value on [onData] callback or just enter a [onNull] callback to handle null values separately.
@@ -55,13 +57,17 @@ class ObserverFuture<D, E> extends StatefulWidget {
       this.reloadButtonText,
       this.progressOverlayBgColor,
       this.overlayWidget,
-      this.transition})
+      this.transition,
+      this.retry,
+      this.autoInitialize = true
+      })
       : assert(onData != null),
         assert(observableFuture != null),
         assert(
             showDefaultProgressInOverlay == false ||
                 showDefaultProgressInWidget == false,
             ' ==>> Warning: Cannot provide both a showDefaultProgressInOverlay and a showDefaultProgressInWidget'),
+        assert(!(retry != null && fetchData == null), 'In order to use [retry] you must inform the [fetchData] callback'),
         super(key: key);
 
   @override
@@ -70,14 +76,21 @@ class ObserverFuture<D, E> extends StatefulWidget {
 
 class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
   OverlayEntry _overlayEntry;
+  int tries;
 
   @override
   void initState() {
     super.initState();
-    if (widget?.fetchData != null &&
-        widget?.observableFuture()?.status != FutureStatus.pending &&
-        widget?.observableFuture()?.value == null) widget.fetchData();
+
+    tries = widget.retry;
+
+    if (widget.autoInitialize == true && widget?.fetchData != null &&
+    widget?.observableFuture()?.status != FutureStatus.pending &&
+    widget?.observableFuture()?.value == null) fetchDataCallback();
+
   }
+
+  void fetchDataCallback() => Future.delayed(Duration.zero,() => widget.fetchData?.call());
 
   @override
   Widget build(BuildContext context) {
@@ -99,15 +112,17 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
 
     switch (observable?.status) {
       case FutureStatus.pending:
-        if (widget.showDefaultProgressInOverlay) showOverlay();
-        if (widget.onPending != null) return widget.onPending(context);
-        return (widget.showDefaultProgressInWidget)
-            ? LoaderWidget(
-                color: Theme.of(context).primaryColor,
-                backgroundColor: Colors.transparent,
-              )
-            : Container();
+        return showPendingWidget(context);
       case FutureStatus.rejected:
+
+        if (widget.retry != null && widget.fetchData != null){
+          if (tries > 0){
+            tries--;
+            fetchDataCallback();
+            return showPendingWidget(context);
+          }
+        }
+
         if (widget.onError != null)
           return widget.onError(context, observable?.error);
         if (widget.fetchData != null && widget.reloadButtonText != null)
@@ -125,6 +140,17 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
         if (widget.onUnstarted != null) return widget.onUnstarted(context);
         return Container();
     }
+  }
+
+  Widget showPendingWidget(BuildContext context){
+    if (widget.showDefaultProgressInOverlay) showOverlay();
+        if (widget.onPending != null) return widget.onPending(context);
+        return (widget.showDefaultProgressInWidget)
+            ? LoaderWidget(
+                color: Theme.of(context).primaryColor,
+                backgroundColor: Colors.transparent,
+              )
+            : Container();
   }
 
   void hideOverlay() {

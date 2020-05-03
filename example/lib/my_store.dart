@@ -51,10 +51,10 @@ abstract class _MyStore with Store {
 
   Future<String> _clientFetch() async {
     await Future.delayed(Duration(seconds: 3));
-    Future.delayed(Duration(seconds: 2), fetch);
-    return 'lorem ipsum';
+    // Future.delayed(Duration(seconds: 2), fetch);
+    // return 'lorem ipsum';
     // return Future.value(null);
-    // return Future.error(Exception('mistakes happens'));
+    return Future.error(Exception('mistakes happens'));
   }
 
   _handleStreamData(Timer _) {
