@@ -9,7 +9,7 @@
 
 ```yaml
   dependencies:
-    mobx_widget: ^0.3.0
+    mobx_widget: ^0.4.0
 ```
 
 #### Import package and use Observer Widgets
@@ -20,7 +20,7 @@ import 'package:mobx_widget/mobx_widget.dart';
 #### Animated Transitions for Observable Text Widget (ObserverText)
 ```dart
 ObserverText(
-  transition: BrazTransition(
+  transition: BrazTransition( // Trasition is optional
     transition: BrazTransitionEnum.fade,
     duration: Duration(seconds: 1),
     curveIn: Curves.linear,
@@ -34,7 +34,10 @@ ObserverText(
 #### ObservableFuture (ObserverFuture) - Generic types is optional(required both if used)
 ```dart
 ObserverFuture<String, Exception>( // Use this widget to handle ObservableFuture events
-  // Use this widget to handle ObservableFuture events
+  retry: 2, // It will retry 2 times after the first error event
+  autoInitialize: false, // If true, it will call [fetchData] automatically
+  fetchData: myStore.fetch, // VoidCallback
+  
   observableFuture: () => myStore.observableFuture,
   onData: (_, data) => Text('DATA: $data'),
   onNull: (_) => Text('NULL'),
