@@ -1,3 +1,5 @@
+## [0.4.1] - Update readme
+
 ## [0.4.0] - Add ObserverFuture retry feature
 * add retry
 * add autoInitialize (if fetchData != null, it will init automatically)
