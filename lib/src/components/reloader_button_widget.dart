@@ -33,7 +33,7 @@ class ReloaderButtonWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                 )
-              : Container()),
+              : SizedBox.shrink()),
     );
   }
 }

@@ -130,7 +130,7 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
             callback: widget.fetchData,
             buttonText: widget.reloadButtonText,
           );
-        return Container();
+        return SizedBox.shrink();
       case FutureStatus.fulfilled:
         if (widget.onNull != null) {
           if (observable?.value == null) return widget.onNull(context);
@@ -138,7 +138,7 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
         return widget.onData(context, observable?.value);
       default:
         if (widget.onUnstarted != null) return widget.onUnstarted(context);
-        return Container();
+        return SizedBox.shrink();
     }
   }
 
@@ -150,7 +150,7 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
             color: Theme.of(context).primaryColor,
             backgroundColor: Colors.transparent,
           )
-        : Container();
+        : SizedBox.shrink();
   }
 
   void hideOverlay() {
