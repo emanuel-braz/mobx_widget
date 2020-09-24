@@ -18,7 +18,7 @@ class ReloaderButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-          color: Colors.white,
+          color: Colors.transparent,
           alignment: Alignment.center,
           padding: EdgeInsets.all(kFloatingActionButtonMargin),
           child: callback != null
@@ -33,7 +33,7 @@ class ReloaderButtonWidget extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                 )
-              : SizedBox.shrink()),
+              : const SizedBox.shrink()),
     );
   }
 }

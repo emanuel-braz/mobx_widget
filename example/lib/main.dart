@@ -12,6 +12,8 @@ class MyApp extends StatelessWidget {
       title: 'MobX Widget Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        primaryColor: Colors.blue,
+        accentColor: Colors.green
       ),
       home: MyHomePage(title: 'MobX Widget Demo'),
     );
@@ -221,10 +223,28 @@ class _MyHomePageState extends State<MyHomePage> {
                     'ObservableFuture:',
                   ),
                   ObserverFuture(
+                    
+                    // showDefaultProgressInOverlay: true,
+                    // overlayWidget: Container(
+                    //   color: Theme.of(context).backgroundColor.withOpacity(.4),
+                    //   child: Center(
+                    //     child: Container(
+                    //       padding: EdgeInsets.all(24),
+                    //       decoration: BoxDecoration(
+                    //           color: Colors.white,
+                    //           borderRadius: BorderRadius.circular(10)),
+                    //       width: 100,
+                    //       height: 100,
+                    //       child: CircularProgressIndicator(),
+                    //     ),
+                    //   ),
+                    // ),
+
                     transition: BrazTransition(
                       transition: BrazTransitionEnum.slideHorizontal,
                       duration: Duration(seconds: 1),
                     ),
+                    
                     retry: 1,
                     autoInitialize: false,
                     fetchData: myStore.fetch,

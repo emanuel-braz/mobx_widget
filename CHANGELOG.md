@@ -1,3 +1,7 @@
+## [0.4.2] - Optimizations and bugfixes
+* issue #1 closed
+* issue #2 closed
+
 ## [0.4.1] - Update readme
 
 ## [0.4.0] - Add ObserverFuture retry feature
