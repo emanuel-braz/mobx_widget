@@ -9,7 +9,7 @@
 
 ```yaml
   dependencies:
-    mobx_widget: ^0.4.0
+    mobx_widget: ^0.4.2
 ```
 
 #### Import package and use Observer Widgets

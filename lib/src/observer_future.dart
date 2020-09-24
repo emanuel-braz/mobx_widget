@@ -130,7 +130,7 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
             callback: widget.fetchData,
             buttonText: widget.reloadButtonText,
           );
-        return Container();
+        return const SizedBox.shrink();
       case FutureStatus.fulfilled:
         if (widget.onNull != null) {
           if (observable?.value == null) return widget.onNull(context);
@@ -138,7 +138,7 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
         return widget.onData(context, observable?.value);
       default:
         if (widget.onUnstarted != null) return widget.onUnstarted(context);
-        return Container();
+        return const SizedBox.shrink();
     }
   }
 
@@ -147,10 +147,10 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
     if (widget.onPending != null) return widget.onPending(context);
     return (widget.showDefaultProgressInWidget)
         ? LoaderWidget(
-            color: Theme.of(context).primaryColor,
+            color: widget.progressOverlayColor,
             backgroundColor: Colors.transparent,
           )
-        : Container();
+        : const SizedBox.shrink();
   }
 
   void hideOverlay() {
@@ -160,16 +160,16 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
 
   void showOverlay() {
     if (widget.showDefaultProgressInOverlay) {
-      Future.delayed(Duration(milliseconds: 1), () {
-        this._overlayEntry = createOverlayEntry(
-            color: widget.progressOverlayColor,
-            backgroundColor: widget.progressOverlayBgColor);
+      if (this._overlayEntry != null) return;
+
+      Future.delayed(Duration.zero, () {
+        this._overlayEntry = createOverlayEntry();
         Overlay.of(context).insert(this._overlayEntry);
       });
     }
   }
 
-  OverlayEntry createOverlayEntry({Color color, Color backgroundColor}) {
+  OverlayEntry createOverlayEntry() {
     return OverlayEntry(
         builder: (context) => widget.overlayWidget != null
             ? Material(
@@ -177,8 +177,8 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
                 color: Colors.transparent,
               )
             : LoaderWidget(
-                color: color ?? Theme.of(context).primaryColor,
-                backgroundColor: backgroundColor ?? Colors.black26,
+                color: widget.progressOverlayColor,
+                backgroundColor: widget.progressOverlayBgColor,
               ));
   }
 }
