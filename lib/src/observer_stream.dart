@@ -40,12 +40,12 @@ class ObserverStream<D, E> extends StatelessWidget {
 
   _getChildWidget(BuildContext context) {
     ObservableStream observable = observableStream();
-    if (observable.status == StreamStatus.waiting &&
-        observable.value == null &&
-        onUnstarted != null) return onUnstarted(context);
-    if (observable.hasError && onError != null)
+    if (onUnstarted != null &&
+        (observable == null || observable.status == StreamStatus.waiting && observable.value == null))
+      return onUnstarted(context);
+    if (observable?.hasError == true && onError != null)
       return onError(context, observable.error);
-    if (observable.value == null && onNull != null) return onNull(context);
-    return onData(context, observable.value);
+    if (observable?.value == null && onNull != null) return onNull(context);
+    return onData(context, observable?.value);
   }
 }

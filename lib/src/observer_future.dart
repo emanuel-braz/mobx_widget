@@ -124,7 +124,7 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
         }
 
         if (widget.onError != null)
-          return widget.onError(context, observable?.error);
+          return widget.onError(context, observable.error);
         if (widget.fetchData != null && widget.reloadButtonText != null)
           return ReloaderButtonWidget(
             callback: widget.fetchData,
@@ -133,9 +133,9 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
         return const SizedBox.shrink();
       case FutureStatus.fulfilled:
         if (widget.onNull != null) {
-          if (observable?.value == null) return widget.onNull(context);
+          if (observable.value == null) return widget.onNull(context);
         }
-        return widget.onData(context, observable?.value);
+        return widget.onData(context, observable.value);
       default:
         if (widget.onUnstarted != null) return widget.onUnstarted(context);
         return const SizedBox.shrink();
