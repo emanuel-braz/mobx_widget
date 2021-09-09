@@ -10,25 +10,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MobX Widget Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryColor: Colors.blue,
-        accentColor: Colors.green
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, primaryColor: Colors.blue, accentColor: Colors.green),
       home: MyHomePage(title: 'MobX Widget Demo'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
+  MyHomePage({Key? key, this.title}) : super(key: key);
+  final String? title;
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  MyStore myStore;
+  late MyStore myStore;
 
   @override
   void initState() {
@@ -42,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title ?? 'VAZIO**'),
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -53,29 +49,44 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 100,
               width: screenWidth,
               color: Colors.amber,
-              child: ObserverFuture(
-                transition: BrazTransition(
-                  transition: BrazTransitionEnum.slideVertical,
+              child: ObserverFuture<String, Exception>(
+                // retry: 2,
+                listen: (observableFuture) {
+                  print(observableFuture?.status);
+                },
+                // fetchData: () {
+                //   myStore.fetch();
+                // },
+                transition: Transition(
+                  transition: TransitionType.slideVertical,
                   duration: Duration(seconds: 1),
                 ),
+                onNull: (_) {
+                  return Center(
+                      key: ObserverKeyOnNull,
+                      child: Text('(on null)', style: TextStyle(color: Colors.white, fontSize: 20)));
+                },
                 observableFuture: () => myStore.observableFuture,
                 onData: (_, data) => Center(
                   key: ObserverKeyOnData,
                   child: Text(
-                    ' 86 °F',
+                    data,
                     style: TextStyle(color: Colors.white, fontSize: 40),
                   ),
                 ),
                 onUnstarted: (_) => Center(
                   key: ObserverKeyOnUnstarted,
                   child: Text(
-                    'Looking for weather servers...',
+                    '(unstarted)',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
-                onPending: (_) => Center(
-                    key: ObserverKeyOnPending,
-                    child: CircularProgressIndicator()),
+                onPending: (_) => Center(key: ObserverKeyOnPending, child: CircularProgressIndicator()),
+                onError: (_, error) {
+                  return Center(
+                      key: UniqueKey(),
+                      child: Text(error.toString(), style: TextStyle(color: Colors.white, fontSize: 20)));
+                },
               ),
             ),
           ),
@@ -98,21 +109,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       alignment: Alignment.centerLeft,
                       width: screenWidth * .9,
                       child: ObserverStream<double, dynamic>(
-                        transition: BrazTransition(
-                            transition: BrazTransitionEnum.sizeHorizontal,
-                            duration: Duration(milliseconds: 100)),
+                        transition: Transition(
+                            transition: TransitionType.sizeHorizontal, duration: Duration(milliseconds: 100)),
                         observableStream: () => myStore.observableStream2,
                         onData: (_, data) => Container(
-                            width:
-                                data != null ? screenWidth * (data / 100) : 0,
+                            width: data != null ? screenWidth * (data / 100) : 0,
                             color: Colors.green,
                             height: 28,
                             key: ObserverKeyOnData),
-                        onUnstarted: (_) => Container(
-                            color: Colors.green,
-                            height: 28,
-                            width: 0,
-                            key: ObserverKeyOnUnstarted),
+                        onUnstarted: (_) =>
+                            Container(color: Colors.green, height: 28, width: 0, key: ObserverKeyOnUnstarted),
                       ),
                     ),
                   ),
@@ -123,94 +129,80 @@ class _MyHomePageState extends State<MyHomePage> {
                   Container(
                     width: double.infinity,
                     child: ObserverStream<String, String>(
-                      transition: BrazTransition(
+                      transition: Transition(
                         duration: Duration(seconds: 2),
-                        transition: BrazTransitionEnum.slideHorizontalDismiss,
+                        transition: TransitionType.slideHorizontalDismiss,
                         curveIn: Curves.linear,
                         curveOut: Curves.linear,
                       ),
                       observableStream: () => myStore.observableStream,
-                      onData: (_, data) =>
-                          Text('DATA: $data', key: ObserverKeyOnData),
+                      onData: (_, data) => Text('DATA: $data', key: ObserverKeyOnData),
                       onNull: (_) => Text(
                         'NULL',
                         key: ObserverKeyOnNull,
                         style: TextStyle(color: Colors.green),
                       ),
-                      onUnstarted: (_) => Text('UNSTARTED',
-                          key: ObserverKeyOnUnstarted,
-                          style: TextStyle(color: Colors.grey)),
-                      onError: (_, error) => Text('ERROR: ' + error,
-                          key: ObserverKeyOnError,
-                          style: TextStyle(color: Colors.red)),
+                      onUnstarted: (_) =>
+                          Text('UNSTARTED', key: ObserverKeyOnUnstarted, style: TextStyle(color: Colors.grey)),
+                      onError: (_, error) =>
+                          Text('ERROR: ' + error, key: ObserverKeyOnError, style: TextStyle(color: Colors.red)),
                     ),
                   ),
                   Divider(),
                   ObserverStream<String, String>(
-                    transition: BrazTransition(
+                    transition: Transition(
                       duration: Duration(seconds: 2),
-                      transition: BrazTransitionEnum.slideVerticalDismiss,
+                      transition: TransitionType.slideVerticalDismiss,
                     ),
                     observableStream: () => myStore.observableStream,
-                    onData: (_, data) =>
-                        Text('DATA: $data', key: ObserverKeyOnData),
+                    onData: (_, data) => Text('DATA: $data', key: ObserverKeyOnData),
                     onNull: (_) => Text(
                       'NULL',
                       key: ObserverKeyOnNull,
                       style: TextStyle(color: Colors.green),
                     ),
-                    onUnstarted: (_) => Text('UNSTARTED',
-                        key: ObserverKeyOnUnstarted,
-                        style: TextStyle(color: Colors.grey)),
-                    onError: (_, error) => Text('ERROR: ' + error,
-                        key: ObserverKeyOnError,
-                        style: TextStyle(color: Colors.red)),
+                    onUnstarted: (_) =>
+                        Text('UNSTARTED', key: ObserverKeyOnUnstarted, style: TextStyle(color: Colors.grey)),
+                    onError: (_, error) =>
+                        Text('ERROR: ' + error, key: ObserverKeyOnError, style: TextStyle(color: Colors.red)),
                   ),
                   Divider(),
                   ObserverStream<String, String>(
-                    transition: BrazTransition(
+                    transition: Transition(
                       duration: Duration(seconds: 2),
-                      transition: BrazTransitionEnum.slideVertical,
+                      transition: TransitionType.slideVertical,
                     ),
                     observableStream: () => myStore.observableStream,
-                    onData: (_, data) =>
-                        Text('DATA: $data', key: ObserverKeyOnData),
+                    onData: (_, data) => Text('DATA: $data', key: ObserverKeyOnData),
                     onNull: (_) => Text(
                       'NULL',
                       key: ObserverKeyOnNull,
                       style: TextStyle(color: Colors.green),
                     ),
-                    onUnstarted: (_) => Text('UNSTARTED',
-                        key: ObserverKeyOnUnstarted,
-                        style: TextStyle(color: Colors.grey)),
-                    onError: (_, error) => Text('ERROR: ' + error,
-                        key: ObserverKeyOnError,
-                        style: TextStyle(color: Colors.red)),
+                    onUnstarted: (_) =>
+                        Text('UNSTARTED', key: ObserverKeyOnUnstarted, style: TextStyle(color: Colors.grey)),
+                    onError: (_, error) =>
+                        Text('ERROR: ' + error, key: ObserverKeyOnError, style: TextStyle(color: Colors.red)),
                   ),
                   Divider(),
                   ObserverStream<String, String>(
-                    transition: BrazTransition(
-                        duration: Duration(seconds: 2),
-                        transition: BrazTransitionEnum.slideHorizontal),
+                    transition: Transition(duration: Duration(seconds: 2), transition: TransitionType.slideHorizontal),
                     observableStream: () => myStore.observableStream,
-                    onData: (_, data) =>
-                        Text('DATA: $data', key: ObserverKeyOnData),
+                    onData: (_, data) => Text('DATA: $data', key: ObserverKeyOnData),
                     onNull: (_) => Text(
                       'NULL',
                       key: ObserverKeyOnNull,
                       style: TextStyle(color: Colors.green),
                     ),
-                    onUnstarted: (_) => Text('UNSTARTED',
-                        key: ObserverKeyOnUnstarted,
-                        style: TextStyle(color: Colors.grey)),
-                    onError: (_, error) => Text('ERROR: ' + error,
-                        key: ObserverKeyOnError,
-                        style: TextStyle(color: Colors.red)),
+                    onUnstarted: (_) =>
+                        Text('UNSTARTED', key: ObserverKeyOnUnstarted, style: TextStyle(color: Colors.grey)),
+                    onError: (_, error) =>
+                        Text('ERROR: ' + error, key: ObserverKeyOnError, style: TextStyle(color: Colors.red)),
                   ),
                   Divider(),
                   ObserverText(
-                    transition: BrazTransition(
-                      transition: BrazTransitionEnum.fade,
+                    transition: Transition(
+                      transition: TransitionType.fade,
                       duration: Duration(seconds: 1),
                       curveIn: Curves.linear,
                       curveOut: Curves.linear,
@@ -218,21 +210,19 @@ class _MyHomePageState extends State<MyHomePage> {
                     onData: (_) => 'ObserverText:\n${myStore.text}',
                     // style: Theme.of(context).textTheme.bodyText1,
                   ),
+                  SizedBox(height: 20),
                   Divider(),
                   Text(
                     'ObservableFuture:',
                   ),
                   ObserverFuture(
-                    
                     // showDefaultProgressInOverlay: true,
                     // overlayWidget: Container(
                     //   color: Theme.of(context).backgroundColor.withOpacity(.4),
                     //   child: Center(
                     //     child: Container(
                     //       padding: EdgeInsets.all(24),
-                    //       decoration: BoxDecoration(
-                    //           color: Colors.white,
-                    //           borderRadius: BorderRadius.circular(10)),
+                    //       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                     //       width: 100,
                     //       height: 100,
                     //       child: CircularProgressIndicator(),
@@ -240,12 +230,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     //   ),
                     // ),
 
-                    transition: BrazTransition(
-                      transition: BrazTransitionEnum.slideHorizontal,
+                    transition: Transition(
+                      transition: TransitionType.slideHorizontal,
                       duration: Duration(seconds: 1),
                     ),
-                    
-                    retry: 1,
+
+                    // retry: 1,
                     autoInitialize: false,
                     fetchData: myStore.fetch,
                     observableFuture: () => myStore.observableFuture,
@@ -281,7 +271,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       key: ObserverKeyOnData,
                     ),
                   ),
-                  SizedBox(height: 20)
                 ],
               ),
             ),

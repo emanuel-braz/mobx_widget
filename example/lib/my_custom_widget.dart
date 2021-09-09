@@ -3,15 +3,14 @@ import 'package:mobx/mobx.dart';
 import 'package:mobx_widget/mobx_widget.dart';
 
 class MyCustomObserverFutureWidget extends StatelessWidget {
-  final ObservableFuture Function() observableFuture;
-  final Function(BuildContext context, dynamic data) onData;
+  final ObservableFuture? Function() observableFuture;
+  final Widget Function(BuildContext context, dynamic data) onData;
 
-  MyCustomObserverFutureWidget({Key key, this.observableFuture, this.onData})
-      : super(key: key);
+  MyCustomObserverFutureWidget({Key? key, required this.observableFuture, required this.onData}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ObserverFuture(
-      transition: BrazTransition(transition: BrazTransitionEnum.rotate),
+      transition: Transition(transition: TransitionType.rotate),
       observableFuture: observableFuture,
       onData: onData,
       onNull: (_) => Icon(

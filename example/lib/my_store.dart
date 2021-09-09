@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:mobx/mobx.dart';
 
 part 'my_store.g.dart';
@@ -8,15 +7,15 @@ part 'my_store.g.dart';
 class MyStore = _MyStore with _$MyStore;
 
 abstract class _MyStore with Store {
-  Timer _timer;
-  Timer _timer2;
+  late Timer _timer;
+  late Timer _timer2;
   final _random = Random();
-  StreamController<String> _streamController;
-  ObservableStream<String>
-      observableStream; // Use in widget ObserverStreamWidget
-  StreamController<double> _streamController2;
-  ObservableStream<double>
-      observableStream2; // Use in widget ObserverStreamWidget
+  late StreamController<String?> _streamController = StreamController<String?>();
+  late ObservableStream<String?> observableStream =
+      ObservableStream(_streamController.stream); // Use in widget ObserverStreamWidget
+  late StreamController<double?> _streamController2 = StreamController<double>();
+  late ObservableStream<double?> observableStream2 =
+      ObservableStream(_streamController2.stream); // Use in widget ObserverStreamWidget
 
   @observable
   String text = "UNSTARTED";
@@ -24,37 +23,28 @@ abstract class _MyStore with Store {
   void changeText(String value) => text = value;
 
   @observable
-  ObservableFuture<String>
-      observableFuture; // Use in widget ObserverFutureWidget
+  ObservableFuture<String?>? observableFuture; // Use in widget ObserverFutureWidget
 
   @action
-  Future<String> fetch() async {
+  Future<String?> fetch() async {
     return observableFuture = ObservableFuture(_clientFetch());
   }
 
   _MyStore() {
-    _streamController = StreamController<String>();
-    _timer = Timer.periodic(const Duration(seconds: 2), _handleStreamData);
-    observableStream = ObservableStream(_streamController.stream);
-
     double counter = 0;
-    _streamController2 = StreamController<double>();
-    observableStream2 = ObservableStream(_streamController2.stream);
+    _timer = Timer.periodic(const Duration(seconds: 2), _handleStreamData);
     _timer2 = Timer.periodic(const Duration(milliseconds: 100), (d) {
       if (counter == 100) counter = 0;
       _streamController2.add(counter++);
     });
-
-    Future.delayed(Duration(seconds: 3),
-        fetch); // Delay future call, to allow rendering unstarted widget
+    Future.delayed(Duration(seconds: 3), fetch); // Delay future call, to allow rendering unstarted widget
   }
 
-  Future<String> _clientFetch() async {
+  Future<String?> _clientFetch() async {
     await Future.delayed(Duration(seconds: 3));
-    // Future.delayed(Duration(seconds: 2), fetch);
-    // return 'lorem ipsum';
+    return ' 87 °F';
     // return Future.value(null);
-    return Future.error(Exception('mistakes happens'));
+    // return Future.error(Exception('mistakes happens'));
   }
 
   _handleStreamData(Timer _) {

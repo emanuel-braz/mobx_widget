@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 export 'package:mobx_widget/src/observer_future.dart';
 export 'package:mobx_widget/src/observer_stream.dart';
 export 'package:mobx_widget/src/observer_text.dart';
-export 'package:mobx_widget/src/utils/braz_animated_transition.dart';
+export 'package:mobx_widget/src/utils/animated_transition.dart';
 
 enum keyEnum { onData, onError, onUnstarted, onNull, onPending }
 const ValueKey ObserverKeyOnData = ValueKey(keyEnum.onData);
