@@ -1,3 +1,9 @@
+## [0.5.0] - 2021-09-09
+### Fixed
+- issue #5 closed - Null Safety Support
+### Break
+- removed `BrazTransitionEnum`, `BrazAnimatedTransition` and `BrazTransition`
+
 ## [0.4.2] - Optimizations and bugfixes
 * issue #1 closed
 * issue #2 closed

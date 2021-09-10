@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx_widget/src/utils/braz_animated_transition.dart';
+import 'package:mobx_widget/src/utils/animated_transition.dart';
 
 class ObserverText extends StatelessWidget {
-  final BrazTransition transition;
-  final String Function(BuildContext context) onData;
-  final InlineSpan Function(BuildContext context) onDataRich;
-  final TextStyle style;
-  final StrutStyle strutStyle;
-  final TextAlign textAlign;
-  final TextDirection textDirection;
-  final Locale locale;
-  final bool softWrap;
-  final TextOverflow overflow;
-  final double textScaleFactor;
-  final int maxLines;
-  final String semanticsLabel;
-  final TextWidthBasis textWidthBasis;
-  final bool isRich;
+  final Transition? transition;
+  final String Function(BuildContext context)? onData;
+  final InlineSpan Function(BuildContext context)? onDataRich;
+  final TextStyle? style;
+  final StrutStyle? strutStyle;
+  final TextAlign? textAlign;
+  final TextDirection? textDirection;
+  final Locale? locale;
+  final bool? softWrap;
+  final TextOverflow? overflow;
+  final double? textScaleFactor;
+  final int? maxLines;
+  final String? semanticsLabel;
+  final TextWidthBasis? textWidthBasis;
+  final bool? isRich;
 
   ObserverText({
-    Key key,
-    @required this.onData,
+    Key? key,
+    required this.onData,
     this.onDataRich,
     this.style,
     this.strutStyle,
@@ -44,19 +44,19 @@ class ObserverText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
       if (transition != null)
-        return BrazAnimatedTransition(
-          transition: transition,
-          child: _getChildWidget(context, isRich),
+        return AnimatedTransition(
+          transition: transition!,
+          child: _getChildWidget(context, isRich!),
         );
 
-      return _getChildWidget(context, isRich);
+      return _getChildWidget(context, isRich!);
     });
   }
 
   ObserverText.rich(
-      {Key key,
+      {Key? key,
       this.onData,
-      @required this.onDataRich,
+      required this.onDataRich,
       this.transition,
       this.style,
       this.strutStyle,
@@ -75,8 +75,8 @@ class ObserverText extends StatelessWidget {
         super(key: key);
 
   Widget _getChildWidget(BuildContext context, bool isRich) => isRich
-      ? Text.rich(onDataRich(context),
-          key: key ?? onDataRich(context)?.hashCode,
+      ? Text.rich(onDataRich!(context),
+          key: key ?? ValueKey(onDataRich!(context).hashCode.toString()),
           style: style,
           strutStyle: strutStyle,
           textAlign: textAlign,
@@ -88,8 +88,8 @@ class ObserverText extends StatelessWidget {
           maxLines: maxLines,
           semanticsLabel: semanticsLabel,
           textWidthBasis: textWidthBasis)
-      : Text(onData(context) ?? '',
-          key: key ?? ValueKey(onData(context)),
+      : Text(onData?.call(context) ?? '',
+          key: key ?? ValueKey(onData?.call(context)),
           style: style,
           strutStyle: strutStyle,
           textAlign: textAlign,

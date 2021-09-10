@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ReloaderButtonWidget extends StatelessWidget {
-  final VoidCallback callback;
-  final String buttonText;
-  final Color buttontextColor;
-  final Color buttonBackgroundColor;
+  final VoidCallback? callback;
+  final String? buttonText;
+  final Color? buttontextColor;
+  final Color? buttonBackgroundColor;
 
   const ReloaderButtonWidget(
-      {this.callback,
-      Key key,
-      this.buttonText,
-      this.buttontextColor,
-      this.buttonBackgroundColor})
+      {this.callback, Key? key, this.buttonText, this.buttontextColor, this.buttonBackgroundColor})
       : super(key: key);
 
   @override
@@ -22,15 +18,16 @@ class ReloaderButtonWidget extends StatelessWidget {
           alignment: Alignment.center,
           padding: EdgeInsets.all(kFloatingActionButtonMargin),
           child: callback != null
-              ? RaisedButton(
-                  color:
-                      buttonBackgroundColor ?? Theme.of(context).primaryColor,
+              ? ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(buttonBackgroundColor ?? Theme.of(context).primaryColor),
+                      padding: MaterialStateProperty.all(EdgeInsets.all(50)),
+                      textStyle: MaterialStateProperty.all(TextStyle(fontSize: 30))),
                   onPressed: this.callback,
                   child: Text(
                     buttonText ?? 'RELOAD',
-                    style: TextStyle(
-                        color: buttontextColor ?? Colors.white,
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(color: buttontextColor ?? Colors.white, fontWeight: FontWeight.bold),
                   ),
                 )
               : const SizedBox.shrink()),

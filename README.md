@@ -7,9 +7,11 @@
 
 ### Example usage
 
+`flutter pub add mobx_widget`
+
 ```yaml
   dependencies:
-    mobx_widget: ^0.4.2
+    mobx_widget: ^0.5.0
 ```
 
 #### Import package and use Observer Widgets
@@ -20,8 +22,8 @@ import 'package:mobx_widget/mobx_widget.dart';
 #### Animated Transitions for Observable Text Widget (ObserverText)
 ```dart
 ObserverText(
-  transition: BrazTransition( // Trasition is optional
-    transition: BrazTransitionEnum.fade,
+  transition: Transition( // Trasition is optional
+    transition: TransitionType.fade,
     duration: Duration(seconds: 1),
     curveIn: Curves.linear,
     curveOut: Curves.linear,
@@ -97,7 +99,7 @@ class MyCustomObserverFutureWidget extends StatelessWidget {
 }
 ```
 
-### All widgets has an optional transition prorpety in version 0.3.0
+### All widgets has an optional transition prorpety
 
 #### Contributions of any kind are welcome! 👾
 
