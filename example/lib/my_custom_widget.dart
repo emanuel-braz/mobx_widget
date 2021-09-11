@@ -6,7 +6,9 @@ class MyCustomObserverFutureWidget extends StatelessWidget {
   final ObservableFuture? Function() observableFuture;
   final Widget Function(BuildContext context, dynamic data) onData;
 
-  MyCustomObserverFutureWidget({Key? key, required this.observableFuture, required this.onData}) : super(key: key);
+  MyCustomObserverFutureWidget(
+      {Key? key, required this.observableFuture, required this.onData})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ObserverFuture(

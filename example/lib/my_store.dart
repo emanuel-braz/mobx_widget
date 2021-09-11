@@ -10,12 +10,14 @@ abstract class _MyStore with Store {
   late Timer _timer;
   late Timer _timer2;
   final _random = Random();
-  late StreamController<String?> _streamController = StreamController<String?>();
-  late ObservableStream<String?> observableStream =
-      ObservableStream(_streamController.stream); // Use in widget ObserverStreamWidget
-  late StreamController<double?> _streamController2 = StreamController<double>();
-  late ObservableStream<double?> observableStream2 =
-      ObservableStream(_streamController2.stream); // Use in widget ObserverStreamWidget
+  late StreamController<String?> _streamController =
+      StreamController<String?>();
+  late ObservableStream<String?> observableStream = ObservableStream(
+      _streamController.stream); // Use in widget ObserverStreamWidget
+  late StreamController<double?> _streamController2 =
+      StreamController<double>();
+  late ObservableStream<double?> observableStream2 = ObservableStream(
+      _streamController2.stream); // Use in widget ObserverStreamWidget
 
   @observable
   String text = "UNSTARTED";
@@ -23,7 +25,8 @@ abstract class _MyStore with Store {
   void changeText(String value) => text = value;
 
   @observable
-  ObservableFuture<String?>? observableFuture; // Use in widget ObserverFutureWidget
+  ObservableFuture<String?>?
+      observableFuture; // Use in widget ObserverFutureWidget
 
   @action
   Future<String?> fetch() async {
@@ -37,7 +40,8 @@ abstract class _MyStore with Store {
       if (counter == 100) counter = 0;
       _streamController2.add(counter++);
     });
-    Future.delayed(Duration(seconds: 3), fetch); // Delay future call, to allow rendering unstarted widget
+    Future.delayed(Duration(seconds: 3),
+        fetch); // Delay future call, to allow rendering unstarted widget
   }
 
   Future<String?> _clientFetch() async {

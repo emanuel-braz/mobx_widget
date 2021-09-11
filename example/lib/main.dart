@@ -10,7 +10,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MobX Widget Demo',
-      theme: ThemeData(primarySwatch: Colors.blue, primaryColor: Colors.blue, accentColor: Colors.green),
+      theme: ThemeData(
+          primarySwatch: Colors.blue,
+          primaryColor: Colors.blue,
+          accentColor: Colors.green),
       home: MyHomePage(title: 'MobX Widget Demo'),
     );
   }
@@ -64,7 +67,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 onNull: (_) {
                   return Center(
                       key: ObserverKeyOnNull,
-                      child: Text('(on null)', style: TextStyle(color: Colors.white, fontSize: 20)));
+                      child: Text('(on null)',
+                          style: TextStyle(color: Colors.white, fontSize: 20)));
                 },
                 observableFuture: () => myStore.observableFuture,
                 onData: (_, data) => Center(
@@ -81,11 +85,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
-                onPending: (_) => Center(key: ObserverKeyOnPending, child: CircularProgressIndicator()),
+                onPending: (_) => Center(
+                    key: ObserverKeyOnPending,
+                    child: CircularProgressIndicator()),
                 onError: (_, error) {
                   return Center(
                       key: UniqueKey(),
-                      child: Text(error.toString(), style: TextStyle(color: Colors.white, fontSize: 20)));
+                      child: Text(error.toString(),
+                          style: TextStyle(color: Colors.white, fontSize: 20)));
                 },
               ),
             ),
@@ -110,15 +117,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       width: screenWidth * .9,
                       child: ObserverStream<double, dynamic>(
                         transition: Transition(
-                            transition: TransitionType.sizeHorizontal, duration: Duration(milliseconds: 100)),
+                            transition: TransitionType.sizeHorizontal,
+                            duration: Duration(milliseconds: 100)),
                         observableStream: () => myStore.observableStream2,
                         onData: (_, data) => Container(
-                            width: data != null ? screenWidth * (data / 100) : 0,
+                            width:
+                                data != null ? screenWidth * (data / 100) : 0,
                             color: Colors.green,
                             height: 28,
                             key: ObserverKeyOnData),
-                        onUnstarted: (_) =>
-                            Container(color: Colors.green, height: 28, width: 0, key: ObserverKeyOnUnstarted),
+                        onUnstarted: (_) => Container(
+                            color: Colors.green,
+                            height: 28,
+                            width: 0,
+                            key: ObserverKeyOnUnstarted),
                       ),
                     ),
                   ),
@@ -136,16 +148,19 @@ class _MyHomePageState extends State<MyHomePage> {
                         curveOut: Curves.linear,
                       ),
                       observableStream: () => myStore.observableStream,
-                      onData: (_, data) => Text('DATA: $data', key: ObserverKeyOnData),
+                      onData: (_, data) =>
+                          Text('DATA: $data', key: ObserverKeyOnData),
                       onNull: (_) => Text(
                         'NULL',
                         key: ObserverKeyOnNull,
                         style: TextStyle(color: Colors.green),
                       ),
-                      onUnstarted: (_) =>
-                          Text('UNSTARTED', key: ObserverKeyOnUnstarted, style: TextStyle(color: Colors.grey)),
-                      onError: (_, error) =>
-                          Text('ERROR: ' + error, key: ObserverKeyOnError, style: TextStyle(color: Colors.red)),
+                      onUnstarted: (_) => Text('UNSTARTED',
+                          key: ObserverKeyOnUnstarted,
+                          style: TextStyle(color: Colors.grey)),
+                      onError: (_, error) => Text('ERROR: ' + error,
+                          key: ObserverKeyOnError,
+                          style: TextStyle(color: Colors.red)),
                     ),
                   ),
                   Divider(),
@@ -155,16 +170,19 @@ class _MyHomePageState extends State<MyHomePage> {
                       transition: TransitionType.slideVerticalDismiss,
                     ),
                     observableStream: () => myStore.observableStream,
-                    onData: (_, data) => Text('DATA: $data', key: ObserverKeyOnData),
+                    onData: (_, data) =>
+                        Text('DATA: $data', key: ObserverKeyOnData),
                     onNull: (_) => Text(
                       'NULL',
                       key: ObserverKeyOnNull,
                       style: TextStyle(color: Colors.green),
                     ),
-                    onUnstarted: (_) =>
-                        Text('UNSTARTED', key: ObserverKeyOnUnstarted, style: TextStyle(color: Colors.grey)),
-                    onError: (_, error) =>
-                        Text('ERROR: ' + error, key: ObserverKeyOnError, style: TextStyle(color: Colors.red)),
+                    onUnstarted: (_) => Text('UNSTARTED',
+                        key: ObserverKeyOnUnstarted,
+                        style: TextStyle(color: Colors.grey)),
+                    onError: (_, error) => Text('ERROR: ' + error,
+                        key: ObserverKeyOnError,
+                        style: TextStyle(color: Colors.red)),
                   ),
                   Divider(),
                   ObserverStream<String, String>(
@@ -173,31 +191,39 @@ class _MyHomePageState extends State<MyHomePage> {
                       transition: TransitionType.slideVertical,
                     ),
                     observableStream: () => myStore.observableStream,
-                    onData: (_, data) => Text('DATA: $data', key: ObserverKeyOnData),
+                    onData: (_, data) =>
+                        Text('DATA: $data', key: ObserverKeyOnData),
                     onNull: (_) => Text(
                       'NULL',
                       key: ObserverKeyOnNull,
                       style: TextStyle(color: Colors.green),
                     ),
-                    onUnstarted: (_) =>
-                        Text('UNSTARTED', key: ObserverKeyOnUnstarted, style: TextStyle(color: Colors.grey)),
-                    onError: (_, error) =>
-                        Text('ERROR: ' + error, key: ObserverKeyOnError, style: TextStyle(color: Colors.red)),
+                    onUnstarted: (_) => Text('UNSTARTED',
+                        key: ObserverKeyOnUnstarted,
+                        style: TextStyle(color: Colors.grey)),
+                    onError: (_, error) => Text('ERROR: ' + error,
+                        key: ObserverKeyOnError,
+                        style: TextStyle(color: Colors.red)),
                   ),
                   Divider(),
                   ObserverStream<String, String>(
-                    transition: Transition(duration: Duration(seconds: 2), transition: TransitionType.slideHorizontal),
+                    transition: Transition(
+                        duration: Duration(seconds: 2),
+                        transition: TransitionType.slideHorizontal),
                     observableStream: () => myStore.observableStream,
-                    onData: (_, data) => Text('DATA: $data', key: ObserverKeyOnData),
+                    onData: (_, data) =>
+                        Text('DATA: $data', key: ObserverKeyOnData),
                     onNull: (_) => Text(
                       'NULL',
                       key: ObserverKeyOnNull,
                       style: TextStyle(color: Colors.green),
                     ),
-                    onUnstarted: (_) =>
-                        Text('UNSTARTED', key: ObserverKeyOnUnstarted, style: TextStyle(color: Colors.grey)),
-                    onError: (_, error) =>
-                        Text('ERROR: ' + error, key: ObserverKeyOnError, style: TextStyle(color: Colors.red)),
+                    onUnstarted: (_) => Text('UNSTARTED',
+                        key: ObserverKeyOnUnstarted,
+                        style: TextStyle(color: Colors.grey)),
+                    onError: (_, error) => Text('ERROR: ' + error,
+                        key: ObserverKeyOnError,
+                        style: TextStyle(color: Colors.red)),
                   ),
                   Divider(),
                   ObserverText(

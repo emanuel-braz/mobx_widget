@@ -33,11 +33,21 @@ class Transition {
       case TransitionType.rotate:
         return RotationTransition(turns: animation, child: child);
       case TransitionType.sizeHorizontal:
-        return SizeTransition(axis: Axis.horizontal, axisAlignment: -1, sizeFactor: animation, child: child);
+        return SizeTransition(
+            axis: Axis.horizontal,
+            axisAlignment: -1,
+            sizeFactor: animation,
+            child: child);
       case TransitionType.sizeVertical:
-        return SizeTransition(axis: Axis.vertical, axisAlignment: -1, sizeFactor: animation, child: child);
+        return SizeTransition(
+            axis: Axis.vertical,
+            axisAlignment: -1,
+            sizeFactor: animation,
+            child: child);
       case TransitionType.slideSwitch:
-        final offsetAnimation = Tween<Offset>(begin: Offset(0.0, -1.0), end: Offset(0.0, 0.0)).animate(animation);
+        final offsetAnimation =
+            Tween<Offset>(begin: Offset(0.0, -1.0), end: Offset(0.0, 0.0))
+                .animate(animation);
         return ClipRect(
           clipBehavior: Clip.antiAlias,
           child: SlideTransition(
@@ -47,9 +57,15 @@ class Transition {
         );
       case TransitionType.slideVerticalDismiss:
         final offsetAnimation = TweenSequence([
-          TweenSequenceItem(tween: Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0)), weight: 20),
+          TweenSequenceItem(
+              tween:
+                  Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0)),
+              weight: 20),
           TweenSequenceItem(tween: ConstantTween(Offset(0.0, 0.0)), weight: 60),
-          TweenSequenceItem(tween: Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, -1.0)), weight: 20)
+          TweenSequenceItem(
+              tween: Tween<Offset>(
+                  begin: Offset(0.0, 0.0), end: Offset(0.0, -1.0)),
+              weight: 20)
         ]).animate(animation);
         return ClipRect(
           clipBehavior: Clip.antiAlias,
@@ -60,8 +76,14 @@ class Transition {
         );
       case TransitionType.slideVertical:
         final offsetAnimation = TweenSequence([
-          TweenSequenceItem(tween: Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0)), weight: 1),
-          TweenSequenceItem(tween: Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, 0.0)), weight: 1)
+          TweenSequenceItem(
+              tween:
+                  Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0)),
+              weight: 1),
+          TweenSequenceItem(
+              tween:
+                  Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, 0.0)),
+              weight: 1)
         ]).animate(animation);
         return ClipRect(
           clipBehavior: Clip.antiAlias,
@@ -72,8 +94,14 @@ class Transition {
         );
       case TransitionType.slideHorizontal:
         final offsetAnimation = TweenSequence([
-          TweenSequenceItem(tween: Tween<Offset>(begin: Offset(1.0, 0.0), end: Offset(0.0, 0.0)), weight: 1),
-          TweenSequenceItem(tween: Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, 0.0)), weight: 1)
+          TweenSequenceItem(
+              tween:
+                  Tween<Offset>(begin: Offset(1.0, 0.0), end: Offset(0.0, 0.0)),
+              weight: 1),
+          TweenSequenceItem(
+              tween:
+                  Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, 0.0)),
+              weight: 1)
         ]).animate(animation);
         return ClipRect(
           clipBehavior: Clip.antiAlias,
@@ -84,9 +112,15 @@ class Transition {
         );
       case TransitionType.slideHorizontalDismiss:
         final offsetAnimation = TweenSequence([
-          TweenSequenceItem(tween: Tween<Offset>(begin: Offset(1.0, 0.0), end: Offset(0.0, 0.0)), weight: 20),
+          TweenSequenceItem(
+              tween:
+                  Tween<Offset>(begin: Offset(1.0, 0.0), end: Offset(0.0, 0.0)),
+              weight: 20),
           TweenSequenceItem(tween: ConstantTween(Offset(0.0, 0.0)), weight: 60),
-          TweenSequenceItem(tween: Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(-1.0, 0.0)), weight: 20)
+          TweenSequenceItem(
+              tween: Tween<Offset>(
+                  begin: Offset(0.0, 0.0), end: Offset(-1.0, 0.0)),
+              weight: 20)
         ]).animate(animation);
         return ClipRect(
           clipBehavior: Clip.antiAlias,
