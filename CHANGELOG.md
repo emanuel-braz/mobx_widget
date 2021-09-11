@@ -1,3 +1,7 @@
+## [0.5.1] - 2021-09-10
+### Chore
+- Format dart files
+
 ## [0.5.0] - 2021-09-09
 ### Fixed
 - issue #5 closed - Null Safety Support

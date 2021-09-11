@@ -79,9 +79,12 @@ class ObserverFuture<D, E> extends StatefulWidget {
     this.retry = 0,
     this.autoInitialize = true,
     this.listen,
-  })  : assert(showDefaultProgressInOverlay == false || showDefaultProgressInWidget == false,
+  })  : assert(
+            showDefaultProgressInOverlay == false ||
+                showDefaultProgressInWidget == false,
             ' ==>> Warning: Cannot provide both a showDefaultProgressInOverlay and a showDefaultProgressInWidget'),
-        assert(!(retry > 0 && fetchData == null), 'In order to use [retry] you must inform the [fetchData] callback'),
+        assert(!(retry > 0 && fetchData == null),
+            'In order to use [retry] you must inform the [fetchData] callback'),
         super(key: key);
 
   @override
@@ -103,7 +106,9 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
 
     tries = widget.retry;
 
-    if ((widget.autoInitialize && widget.fetchData != null && _observableFuture == null) ||
+    if ((widget.autoInitialize &&
+            widget.fetchData != null &&
+            _observableFuture == null) ||
         (widget.autoInitialize &&
             widget.fetchData != null &&
             _observableFuture != null &&
@@ -113,7 +118,8 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
     }
   }
 
-  void fetchDataCallback() => Future.delayed(Duration.zero, () => widget.fetchData?.call());
+  void fetchDataCallback() =>
+      Future.delayed(Duration.zero, () => widget.fetchData?.call());
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +137,8 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
   Widget _getChildWidget(BuildContext context) {
     _observableFuture = widget.observableFuture?.call();
 
-    if (_observableFuture != null && _observableFuture!.status != FutureStatus.pending) hideOverlay();
+    if (_observableFuture != null &&
+        _observableFuture!.status != FutureStatus.pending) hideOverlay();
 
     widget.listen?.call(_observableFuture);
 
@@ -145,7 +152,8 @@ class _ObserverFutureState<D, E> extends State<ObserverFuture<D, E>> {
           return showPendingWidget(context);
         }
 
-        if (widget.onError != null) return widget.onError!(context, _observableFuture?.error);
+        if (widget.onError != null)
+          return widget.onError!(context, _observableFuture?.error);
         if (widget.fetchData != null && widget.reloadButtonText != null)
           return ReloaderButtonWidget(
             callback: widget.fetchData,
